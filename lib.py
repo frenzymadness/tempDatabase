@@ -7,7 +7,8 @@ from collections import Counter
 def get_avg_temp(cursor, cond):
     cursor.execute('SELECT avg(tempreature) as average FROM records \
                     WHERE date like ?', (cond + ' %', ))
-    return cursor.fetchone()[0]
+    # Zaokrouhleni hodnoty na tri desetinna mista
+    return round(cursor.fetchone()[0], 3)
 
 
 # Pro zadanou podminku vybere z db nejcastejsi stav pocasi
