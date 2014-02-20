@@ -1,8 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
-# Fetches Weather info from Weather Underground
-#
-# Usage: ./wundergound.py zipcode
 #
 # International:
 #  * Go to http://www.wunderground.com/
@@ -10,47 +7,42 @@
 #  * Click the RSS icon
 #  * Station ID is the number that follows /stations/ in the url
 #
-#
+#  - Code for Ostrava is 11782
 
-# Values are either True or False
-metric=True
-international=True
 
 import sys
 import feedparser
+# Values are either True or False
 
-def usage():
-    print("Usage:")
+
+def weatherInfo(location):
+
+    metric = True
+    international = True
+
     if international:
-        print("  ./wunderground.py StationID")
+        url = "http://rss.wunderground.com/auto/rss_full/global/stations/"
     else:
-        print("  ./weunderground.py zipcode")
-    sys.exit(1)
+        url = "http://rss.wunderground.com/auto/rss_full/"
 
-if not len(sys.argv) == 2:
-    usage()
+    feed = feedparser.parse(url+location)
 
-location=sys.argv[1]
+    if not feed.feed:
+        # Assume Error
+        print("Error")
+        sys.exit(1)
 
-if international:
-    url="http://rss.wunderground.com/auto/rss_full/global/stations/"
-else:
-    url="http://rss.wunderground.com/auto/rss_full/"
+    current = feed['items'][0].title
 
-feed=feedparser.parse(url+location)
+    if metric:
+        temp = current.split(",")[0].split(":")[1].split("/")[1].strip()
+    else:
+        temp = current.split(",")[0].split(":")[1].split("/")[0].strip()
 
-if not feed.feed:
-    # Assume Error
-    print("Error")
-    sys.exit(1)
+    condition = current.split(",")[1].split("-")[0].strip()
 
-current=feed['items'][0].title
+    return temp, condition
 
-if metric:
-    temp=current.split(",")[0].split(":")[1].split("/")[1].strip()
-else:
-    temp=current.split(",")[0].split(":")[1].split("/")[0].strip()
-
-condition=current.split(",")[1].split("-")[0].strip()
-
-print temp, "-", condition
+if __name__ == '__main__':
+    tempreature, condition = weatherInfo('11782')
+    print "Tempreature and condition is %s %s" % (tempreature, condition)
