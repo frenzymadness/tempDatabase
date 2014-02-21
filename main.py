@@ -45,19 +45,19 @@ for position in sensors:
 
     ### Vypocet a ulozeni prumernych hodnot
     # Pro dny
-    avg_day_temp = l.get_avg_temp(c, day)
-    avg_day_cond = l.get_avg_condition(c, day)
+    avg_day_temp = l.get_avg_temp(c, day, position)
+    avg_day_cond = l.get_avg_condition(c, day, position)
     l.save_data(c, 'days', (day, position, avg_day_temp, avg_day_cond))
 
     # Pro mesice
-    avg_month_temp = l.get_avg_temp(c, month)
-    avg_month_cond = l.get_avg_condition(c, month)
+    avg_month_temp = l.get_avg_temp(c, month, position)
+    avg_month_cond = l.get_avg_condition(c, month, position)
     l.save_data(c, 'months', (month, position,
                               avg_day_temp, avg_day_cond))
 
     # Pro roky
-    avg_year_temp = l.get_avg_temp(c, year)
-    avg_year_cond = l.get_avg_condition(c, year)
+    avg_year_temp = l.get_avg_temp(c, year, position)
+    avg_year_cond = l.get_avg_condition(c, year, position)
     l.save_data(c, 'years', (year, position,
                              avg_day_temp, avg_day_cond))
 
