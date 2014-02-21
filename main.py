@@ -40,7 +40,7 @@ for position in sensors:
         # Zapiseme aktualni teplotu a stav do databaze
 
         # Pripojeni a kurzor
-        conn = sqlite3.connect('database.sqlite')
+        conn = sqlite3.connect('database.sqlite', isolation_level=None)
         c = conn.cursor()
 
         # Tuple s daty pro zapis
@@ -56,25 +56,22 @@ for position in sensors:
         # Pro dny
         avg_day_temp = l.get_avg_temp(c, day)
         avg_day_cond = l.get_avg_condition(c, day)
-        data = (day, position, avg_day_temp, avg_day_cond)
-        c.execute('INSERT OR IGNORE INTO days VALUES (?, ?, ?, ?)', data)
-        conn.commit()
+        l.save_data(c, 'days', (day, position, avg_day_temp, avg_day_cond))
 
         # Pro mesice
         avg_month_temp = l.get_avg_temp(c, month)
         avg_month_cond = l.get_avg_condition(c, month)
-        data = (month, position, avg_month_temp, avg_month_cond)
-        c.execute('INSERT OR IGNORE INTO months VALUES (?, ?, ?, ?)', data)
-        conn.commit()
+        l.save_data(c, 'months', (month, position,
+                                  avg_day_temp, avg_day_cond))
 
         # Pro roky
         avg_year_temp = l.get_avg_temp(c, year)
         avg_year_cond = l.get_avg_condition(c, year)
-        data = (year, position, avg_year_temp, avg_year_cond)
-        c.execute('INSERT OR IGNORE INTO years VALUES (?, ?, ?, ?)', data)
-        conn.commit()
+        l.save_data(c, 'years', (year, position,
+                                 avg_day_temp, avg_day_cond))
 
         # Uzavreme spojeni s databazi
+        conn.commit()
         conn.close()
     else:
         # Zde bude nasledovat totez pro senzory teploty
