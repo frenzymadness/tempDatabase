@@ -1,0 +1,11 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE records(date CHAR(15) PRIMARY KEY, position CHAR(100) NOT NULL, tempreature REAL NOT NULL, condition CHAR(150));
+INSERT INTO "records" VALUES('2014-02-21 17:52:09','outside - internet',7.2,'Overcast');
+CREATE TABLE days(date CHAR(15) PRIMARY KEY, position CHAR(100) NOT NULL, tempreature REAL NOT NULL, condition CHAR(150));
+INSERT INTO "days" VALUES('2014-02-21','outside - internet',7.2,'Overcast');
+CREATE TABLE months(date CHAR(15) PRIMARY KEY, position CHAR(100) NOT NULL, tempreature REAL NOT NULL, condition CHAR(150));
+INSERT INTO "months" VALUES('2014-02','outside - internet',7.2,'Overcast');
+CREATE TABLE years(date CHAR(15) PRIMARY KEY, position CHAR(100) NOT NULL, tempreature REAL NOT NULL, condition CHAR(150));
+INSERT INTO "years" VALUES('2014','outside - internet',7.2,'Overcast');
+COMMIT;
