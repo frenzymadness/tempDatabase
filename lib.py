@@ -20,3 +20,8 @@ def get_avg_condition(cursor, cond):
     data = cursor.fetchall()
     counter = Counter(data)
     return counter.most_common()[0][0]
+
+
+# Funkce pro ukladani dat do db
+def save_data(cursor, data):
+    cursor.execute('INSERT OR IGNORE INTO years VALUES (?, ?, ?, ?)', data)
