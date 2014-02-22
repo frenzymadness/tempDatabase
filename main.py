@@ -16,7 +16,8 @@ year = time.strftime('%Y')
 ### Pro kazdou zkoumanou lokalitu (internet, ci senzory)
 ### provedeme zaznam a prepocet
 sensors = ['outside - internet',
-          ['inside - raspberry', '/10.9F1ECF020800']]
+          ['inside - raspberry', '/10.9F1ECF020800'],
+          ['inside - livingroom', '/10.3E03CF020800']]
 
 for position in sensors:
 
@@ -39,8 +40,12 @@ for position in sensors:
     else:
         # Zde bude nasledovat totez pro senzory teploty
         position, address = position
-        sensor = ow.Sensor(address)
-        tempreature = sensor.temperature
+        try:
+            sensor = ow.Sensor(address)
+            tempreature = sensor.temperature
+        except:
+            print "Error with sensor %s on %s" % (position, address)
+            continue
         condition = 'Inside'
 
     # Zapis aktualnich dat
