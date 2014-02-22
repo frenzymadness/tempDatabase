@@ -40,8 +40,8 @@ for position in sensors:
         # Zde bude nasledovat totez pro senzory teploty
         position, address = position
         sensor = ow.Sensor(address)
-	tempreature = sensor.temperature
-	condition = 'Inside'
+        tempreature = sensor.temperature
+        condition = 'Inside'
 
     # Zapis aktualnich dat
     l.save_data(c, 'records', (now, position, tempreature, condition))
