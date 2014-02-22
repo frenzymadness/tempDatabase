@@ -4,6 +4,7 @@ import weather
 import time
 import sqlite3
 import lib as l
+import ow
 
 # Zjistime aktualni datum a cas v odpovisajicich formatech
 # pro jednotlive tabulky
@@ -15,14 +16,16 @@ year = time.strftime('%Y')
 ### Pro kazdou zkoumanou lokalitu (internet, ci senzory)
 ### provedeme zaznam a prepocet
 sensors = ['outside - internet',
-          ['inside - terrarium', '81.7FD921000000'],
-          ['inside - livingroom', '83.7FD921000000']]
+          ['inside - raspberry', '/10.9F1ECF020800']]
 
 for position in sensors:
 
     # Pripojeni a kurzor
     conn = sqlite3.connect('database.sqlite', isolation_level=None)
     c = conn.cursor()
+
+    # Inicializace spojeni k one-wire sbernici
+    ow.init("localhost:4304")
 
     ### Pokud se jena o internetovou teplotu, zjistime info z netu
     # jinak zjistime ze senzoru teploty
@@ -35,9 +38,10 @@ for position in sensors:
 
     else:
         # Zde bude nasledovat totez pro senzory teploty
-        name, address = position
-        print 'Sensor name: %s Sensor adress: %s' % (name, address)
-        continue
+        position, address = position
+        sensor = ow.Sensor(address)
+	tempreature = sensor.temperature
+	condition = 'Inside'
 
     # Zapis aktualnich dat
     l.save_data(c, 'records', (now, position, tempreature, condition))
