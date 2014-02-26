@@ -10,7 +10,6 @@
 #  - Code for Ostrava is 11782
 
 
-import sys
 import feedparser
 # Values are either True or False
 
@@ -26,11 +25,9 @@ def weatherInfo(location):
         url = "http://rss.wunderground.com/auto/rss_full/"
 
     feed = feedparser.parse(url+location)
-
+    # Pokud neco neni v poradku vygenerujeme vyjimku
     if not feed.feed:
-        # Assume Error
-        print("Error")
-        sys.exit(1)
+        raise RuntimeError("Feed error")
 
     current = feed['items'][0].title
 

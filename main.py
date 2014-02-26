@@ -31,11 +31,15 @@ for position in sensors:
     ### Pokud se jena o internetovou teplotu, zjistime info z netu
     # jinak zjistime ze senzoru teploty
     if position == 'outside - internet':
-        # Zjistime si aktualni teplotu z internetu
-        tempreature, condition = weather.weatherInfo('11782')
+        # Pokud se neco pri stahovani hodnot z netu pokazi, preskocime tento pokus
+        try:
+            # Zjistime si aktualni teplotu z internetu
+            tempreature, condition = weather.weatherInfo('11782')
 
-        # Odstranime jednotku z teploty
-        tempreature = tempreature.rstrip('C')
+            # Odstranime jednotku z teploty
+            tempreature = tempreature.rstrip('C')
+        except:
+            continue
 
     else:
         # Zde bude nasledovat totez pro senzory teploty
